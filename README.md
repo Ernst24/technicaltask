@@ -8,7 +8,11 @@
 * Содержит кастомный декоратор проверки прав (`PermissionChecker`).
 * Содержит Mock-Views для бизнес-объектов (documents, tickets, analytics).
 ## ВАЖНО:
-** Перед запуском команд обязательно перейдите в папку проекта:
+```bash
+git clone https://github.com/Ernst24/technicaltask.git
+```
+
+Перед запуском команд обязательно перейдите в папку проекта:
 ```bash
 cd technicaltask
 ```
