@@ -1,0 +1,14 @@
+FROM python:3.11-slim
+
+WORKDIR /code
+
+COPY ./requirements.txt /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r /code/requirements.txt
+
+COPY ./alembic.ini /code/alembic.ini
+COPY ./.env /code/.env
+
+COPY ./app /code/app
+
+EXPOSE 8000
