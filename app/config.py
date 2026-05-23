@@ -6,14 +6,15 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASSWORD: str
     DB_HOST: str
-    DB_PORT: int
+    DB_PORT_INTERNAL: int
+    DB_PORT_EXTERNAL: int
     JWT_SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     JWT_ALGORITHM: str
 
     @property
     def get_db(self):
-        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT_INTERNAL}/{self.DB_NAME}"
 
     model_config = SettingsConfigDict(env_file=".env")
 

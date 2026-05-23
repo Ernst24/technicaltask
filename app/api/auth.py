@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Response
+from fastapi.params import Body
 
 from app.api.dependencies import DBDep, UserIdDep
 from app.exceptions import (
@@ -30,7 +31,46 @@ async def register(user_data: UsersRequestAdd, db: DBDep):
 
 
 @router.post("/login", summary="Аутентификация")
-async def login(user_data: UsersLoginData, response: Response, db: DBDep):
+async def login(response: Response,
+                db: DBDep,user_data:
+                UsersLoginData = Body(openapi_examples={
+            "admin_login": {
+                "summary": "Войти как Админ (Иван)",
+                "value": {
+                    "email": "admin@mail.ru",
+                    "password": "secret_pass"
+                }
+            },
+            "manager_login": {
+                "summary": "Войти как Менеджер (Петр)",
+                "value": {
+                    "email": "manager@mail.ru",
+                    "password": "secret_pass"
+                }
+            },
+            "client_login": {
+                "summary": "Войти как Клиент (Алексей)",
+                "value": {
+                    "email": "client@mail.ru",
+                    "password": "secret_pass"
+                }
+            },
+            "support_login": {
+                "summary": "Войти как Саппорт (Елена)",
+                "value": {
+                    "email": "support@mail.ru",
+                    "password": "secret_pass"
+                }
+            },
+            "banned_login": {
+                "summary": "Тест: Забаненный пользователь (Для 401 ошибки)",
+                "value": {
+                    "email": "banned@mail.ru",
+                    "password": "secret_pass"
+                }
+            }
+        })
+):
     try:
         result = await AuthService(db).login(user_data)
     except EmailNotRegisteredException:
@@ -41,13 +81,13 @@ async def login(user_data: UsersLoginData, response: Response, db: DBDep):
     return {"Logged In!": "Successfully"}
 
 
-@router.get("/logout")
+@router.get("/logout", summary="Выход из системы")
 async def logout(response: Response):
     response.delete_cookie("access_token")
     return {"Logged Out!": "Successfully"}
 
 
-@router.delete("/delete", summary="Удалить свой аккаунт!, ставим is_active=False")
+@router.delete("/delete", summary="Удалить свой аккаунт, ставим is_active=False")
 async def delete(response: Response, user_id: UserIdDep, db: DBDep):
     await AuthService(db).delete_user(user_id)
     response.delete_cookie("access_token")

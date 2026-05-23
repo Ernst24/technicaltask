@@ -18,10 +18,10 @@ async def seed_data():
 
         print("Запуск инициализации тестовых данных...")
 
-        admin_role = RolesOrm(id=1, role_name="admin")
-        manager_role = RolesOrm(id=2, role_name="manager")
-        client_role = RolesOrm(id=3, role_name="client")
-        support_role = RolesOrm(id=4, role_name="support")
+        admin_role = RolesOrm(role_name="admin")
+        manager_role = RolesOrm(role_name="manager")
+        client_role = RolesOrm(role_name="client")
+        support_role = RolesOrm(role_name="support")
 
         db.add_all([admin_role, manager_role, client_role, support_role])
         await db.flush()
@@ -30,7 +30,6 @@ async def seed_data():
 
         users = [
             UsersOrm(
-                id=1,
                 name="Иван",
                 surname="Админов",
                 patronym="Игоревич",
@@ -40,7 +39,6 @@ async def seed_data():
                 role_id=1,
             ),
             UsersOrm(
-                id=2,
                 name="Петр",
                 surname="Менеджеров",
                 patronym="Алексеевич",
@@ -50,7 +48,6 @@ async def seed_data():
                 role_id=2,
             ),
             UsersOrm(
-                id=3,
                 name="Алексей",
                 surname="Клиентов",
                 patronym="Сергеевич",
@@ -60,7 +57,6 @@ async def seed_data():
                 role_id=3,
             ),
             UsersOrm(
-                id=4,
                 name="Елена",
                 surname="Саппортова",
                 patronym="Владимировна",
@@ -70,7 +66,6 @@ async def seed_data():
                 role_id=4,
             ),
             UsersOrm(
-                id=5,
                 name="Забаненный",
                 surname="Пользователь",
                 patronym="Отшельникович",
@@ -105,7 +100,6 @@ async def seed_data():
             PermissionsOrm(role_id=2, resource="document", action="create"),
             PermissionsOrm(role_id=2, resource="document", action="update"),
             PermissionsOrm(role_id=2, resource="analytics", action="read"),
-            PermissionsOrm(role_id=2, resource="permission_rule", action="read"),
         ]
 
         # 7. Правила ADMIN (role_id = 1) — Полный доступ
@@ -123,7 +117,6 @@ async def seed_data():
             PermissionsOrm(role_id=1, resource="ticket", action="update"),
             PermissionsOrm(role_id=1, resource="analytics", action="read"),
             PermissionsOrm(role_id=1, resource="analytics", action="delete"),
-            PermissionsOrm(role_id=1, resource="permission_rule", action="read"),
         ]
 
         db.add_all(client_perms + support_perms + manager_perms + admin_perms)
